@@ -27,7 +27,7 @@ public class Array {
         return arr[index];
     }
 
-    public void set (int index, int value) {
+    public void set(int index, int value) {
         if (index >= size || index < 0)
             throw new ArrayIndexOutOfBoundsException(index);
         arr[index] = value;
@@ -59,10 +59,59 @@ public class Array {
     }
 
     // homework
-    // insert(index, value);
-    // delete(val);
-    // delete(index);
-    // deleteAll();
+    public void insert(int index, int value) {
+        if (index < 0 || index > size) throw new ArrayIndexOutOfBoundsException(index);
+        int[] temp = arr;
+        index -= 1;
+        size += 1;
+        arr = new int[size];
+        for (int i = 0; i < index; i++) {
+            arr[i] = temp[i];
+        }
+        arr[index] = value;
+        for (int i = index + 1; i < arr.length; i++) {
+            arr[i] = temp[i - 1];
+        }
+    }
+
+    public void delete(int val) {
+        int index = find(val);
+        if (index < 0) System.out.println("There is no value : " + val + " in array");
+        else if (index == 0) {
+            int[] temp = arr;
+            size = size - 1;
+            arr = new int[size];
+            System.arraycopy(temp, index + 1, arr, 0, size);
+        } else {
+            int[] temp = arr;
+            size = size - 1;
+            arr = new int[size];
+            for (int i = 0, j = 0; i < size; i++, j++) {
+                if (j == index) {
+                    j++;
+                }
+                arr[i] = temp[j];
+            }
+        }
+    }
+
+    public void deleteByIndex(int index) {
+        if (index < 0 || index >= size) throw new ArrayIndexOutOfBoundsException(index);
+        int[] temp = arr;
+        size = size - 1;
+        arr = new int[size];
+        for (int i = 0, j = 0; i < size; i++, j++) {
+            if (j == index) {
+                j++;
+            }
+            arr[i] = temp[j];
+        }
+    }
+
+    public void deleteAll() {
+        size = 0;
+        arr = new int[size];
+    }
 
     @Override
     public String toString() {
@@ -116,13 +165,38 @@ public class Array {
     }
 
     public void sortBubble() {
+        int steps = 0;
         for (int i = 0; i < size; i++) {
+            steps++;
             for (int j = 0; j < size - 1; j++) {
+                steps++;
                 if (arr[j] > arr[j + 1])
                     swap(j, j + 1);
+                steps++;
             }
         }
         isSorted = true;
+        System.out.println("Steps in algorithm bubleSort: " + steps);
+    }
+
+    public void sortBubbleUpgrade() { //O (n*n)
+        int steps = 0;
+        for (int i = 0; i < size; i++) { // O(n)
+            steps++;
+            for (int j = 0; j < size - i - 1; j++) { // O(n/2)
+                steps++;
+                if (arr[j] > arr[j + 1])
+                    swap(j, j + 1);
+                steps++;
+
+            }
+        }
+        isSorted = true;
+        System.out.println("Steps in algorithm bubleSortUpgrade: " + steps);
+    }
+
+    public void countingSort() { //если код не полный - значит не успел вовремя дописать :(
+
     }
 
     public void sortSelect() {
